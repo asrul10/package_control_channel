@@ -68,10 +68,10 @@
 		{
 			"name": "Varicolor",
 			"details": "https://github.com/iasEnvy/varicolor",
-			"labels": ["highlighting","tmLanguage"],
+			"labels": ["highlighting","tmLanguage","sublime-syntax"],
 			"releases": [
 				{
-					"sublime_text": "*",
+					"sublime_text": ">=3084",
 					"tags": true
 				}
 			]
@@ -161,6 +161,17 @@
 			]
 		},
 		{
+			"name": "VDP Logs",
+			"details": "https://github.com/narendrans/sublime-vdp-logs",
+			"labels": ["syntax","vdp","denodo"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
 			"name": "Ver",
 			"details": "https://github.com/nyx-platform/ver-tmbundle",
 			"releases": [
@@ -197,6 +208,17 @@
 				{
 					"sublime_text": "*",
 					"branch": "master"
+				}
+			]
+		},
+		{
+			"name": "Verilog Gadget",
+			"details": "https://github.com/poucotm/Verilog-Gadget",
+			"labels": ["verilog"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
 				}
 			]
 		},
@@ -325,11 +347,31 @@
 			]
 		},
 		{
+			"name": "VintageES",
+			"details": "https://github.com/SublimeText/Vintage-Extended-Support",
+			"releases": [
+				{
+					"sublime_text": ">=3000",
+					"tags": true
+				}
+			]
+		},
+		{
 			"details": "https://github.com/SublimeText/VintageEx",
 			"releases": [
 				{
 					"sublime_text": "<3000",
 					"branch": "master"
+				}
+			]
+		},
+		{
+			"name": "VintageLines",
+			"details": "https://github.com/co-dh/VintageLines",
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
 				}
 			]
 		},
@@ -350,6 +392,16 @@
 				{
 					"sublime_text": ">=3000",
 					"branch": "master"
+				}
+			]
+		},
+		{
+			"name": "VintageousPluginSurround",
+			"details": "https://github.com/guillermooo/Vintageous_Plugin_Surround",
+			"releases": [
+				{
+					"sublime_text": ">=3000",
+					"tags": true
 				}
 			]
 		},
@@ -521,6 +573,16 @@
 		{
 			"name": "Vue Syntax Highlight",
 			"details": "https://github.com/vuejs/vue-syntax-highlight",
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
+			"name": "Vuejs Complete Package",
+			"details": "https://github.com/BrainBuzzer/vuejs-sublime-complete",
 			"releases": [
 				{
 					"sublime_text": "*",

@@ -125,6 +125,22 @@ def generate_test_methods(cls, stream):
     return cls
 
 
+# Very limited subclassing of dict class, which just suits our needs
+class CaseInsensitiveDict(dict):
+    @classmethod
+    def _k(cls, key):
+        return key.lower() if isinstance(key, str_cls) else key
+
+    def __getitem__(self, key):
+        return super(CaseInsensitiveDict, self).__getitem__(self._k(key))
+
+    def __setitem__(self, key, value):
+        super(CaseInsensitiveDict, self).__setitem__(self._k(key), value)
+
+    def __contains__(self, key):
+        return super(CaseInsensitiveDict, self).__contains__(self._k(key))
+
+
 def get_package_name(data):
     """Get "name" from a package with a workaround when it's not defined.
 
@@ -147,9 +163,10 @@ class TestContainer(object):
 
     @classmethod
     def setUpClass(cls):
-        cls.package_names = dict()
-        cls.previous_package_names = dict()
-        cls.dependency_names = dict()
+        cls.package_names = CaseInsensitiveDict()
+        cls.dependency_names = CaseInsensitiveDict()
+        # tuple of (prev_name, include, name); prev_name for case sensitivity
+        cls.previous_package_names = CaseInsensitiveDict()
 
     rel_b_reg = r'''^ (https:// github\.com/ [^/]+/ [^/]+
                       |https:// bitbucket\.org/ [^/]+/ [^/]+
@@ -195,6 +212,10 @@ class TestContainer(object):
             else:
                 self.dependency_names[name] = include
                 repo_dependency_names.append(name)
+            if name in self.package_names:
+                self.fail("Dependency and package names must be unique: %s, "
+                          "previously occured in %s"
+                          % (name, self.package_names[name]))
 
         # Check package order
         self.assertEqual(repo_dependency_names,
@@ -216,11 +237,21 @@ class TestContainer(object):
                 self.fail("Package names must be unique: %s, previously "
                           "occured in %s"
                           % (pname, self.package_names[pname]))
-            elif pname in self.previous_package_names:
+            elif (
+                pname in self.previous_package_names
+                # check casing
+                and pname == self.previous_package_names[pname][0]
+            ):
+                print(pname, self.previous_package_names[pname][0])
                 self.fail("Package names can not occur as a name and as a "
                           "previous_name: %s, previously occured as "
-                          "previous_name in %s"
-                          % (pname, self.previous_package_names[pname]))
+                          "previous_name in %s: %s"
+                          % (pname, self.previous_package_names[pname][1],
+                             self.previous_package_names[pname][2]))
+            elif pname in self.dependency_names:
+                self.fail("Dependency and package names must be unique: %s, "
+                          "previously occured in %s"
+                          % (pname, self.dependency_names[pname]))
             else:
                 self.package_names[pname] = include
                 repo_package_names.append(pname)
@@ -265,16 +296,20 @@ class TestContainer(object):
         for k, v in data.items():
             self.enforce_key_types_map(k, v, self.package_key_types_map)
 
-            if k == 'donate' and v is None:
-                # Allow "removing" the donate url that is added by "details"
-                continue
-            elif k in ('homepage', 'readme', 'issues', 'donate', 'buy'):
-                self.assertRegex(v, '^https?://')
-
-            elif k == 'details':
+            if k == 'details':
                 self.assertRegex(v, self.package_details_regex,
                                  'The details url is badly formatted or '
                                  'invalid')
+
+            elif k == 'donate' and v is None:
+                # Allow "removing" the donate url that is added by "details"
+                continue
+
+            elif k == 'labels':
+                for label in v:
+                    self.assertNotIn(",", label,
+                                     "Multiple labels should not be in the "
+                                     "same string")
 
             elif k == 'previous_names':
                 # Test if name is unique, against names and previous_names.
@@ -291,8 +326,11 @@ class TestContainer(object):
                                   % (prev_name, self.package_names[prev_name]))
                     else:
                         self.previous_package_names[prev_name] = (
-                            "%s: %s" % (include, name)  # include package hint
+                            (prev_name, include, name)
                         )
+
+            elif k in ('homepage', 'readme', 'issues', 'donate', 'buy'):
+                self.assertRegex(v, '^https?://')
 
         # Test for invalid characters (on file systems)
         # Invalid on Windows (and sometimes problematic on UNIX)
@@ -438,11 +476,12 @@ class TestContainer(object):
                                  'invalid')
 
             elif k == 'sublime_text':
-                self.assertRegex(v, '^(\*|<=?\d{4}|>=?\d{4})$',
-                                 'sublime_text must be `*` or of the form '
-                                 '<relation><version> '
+                self.assertRegex(v, '^(\*|<=?\d{4}|>=?\d{4}|\d{4} - \d{4})$',
+                                 'sublime_text must be `*`, of the form '
+                                 '`<relation><version>` '
                                  'where <relation> is one of {<, <=, >, >=} '
-                                 'and <version> is a 4 digit number')
+                                 'and <version> is a 4 digit number, '
+                                 'or of the form `<version> - <version>`')
 
             elif k == 'platforms':
                 if isinstance(v, str_cls):
@@ -542,11 +581,11 @@ class TestContainer(object):
                 except Exception as e:
                     yield cls._fail("Downloading %s failed" % path, e)
                     return
-                source = source.decode("utf-8", 'replace')
+                source = source.decode("utf-8", 'strict')
             else:
                 try:
                     with _open(path) as f:
-                        source = f.read().decode('utf-8', 'replace')
+                        source = f.read().decode('utf-8', 'strict')
                 except Exception as e:
                     yield cls._fail("Opening %s failed" % path, e)
                     return
@@ -646,7 +685,7 @@ class DefaultChannelTests(TestContainer, unittest.TestCase):
     def pre_generate(cls):
         if not hasattr(cls, 'j'):
             with _open('channel.json') as f:
-                cls.source = f.read().decode('utf-8', 'replace')
+                cls.source = f.read().decode('utf-8', 'strict')
                 cls.j = json.loads(cls.source)
 
             from collections import defaultdict
@@ -655,6 +694,7 @@ class DefaultChannelTests(TestContainer, unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         if cls.skipped_repositories:
+            # TODO somehow pass stream here
             print("Repositories skipped: %s" % dict(cls.skipped_repositories))
 
     def test_channel_keys(self):
@@ -714,7 +754,7 @@ class DefaultRepositoryTests(TestContainer, unittest.TestCase):
     def pre_generate(cls):
         if not hasattr(cls, 'j'):
             with _open('repository.json') as f:
-                cls.source = f.read().decode('utf-8', 'replace')
+                cls.source = f.read().decode('utf-8', 'strict')
                 cls.j = json.loads(cls.source)
 
     def test_repository_keys(self):
@@ -738,10 +778,10 @@ class DefaultRepositoryTests(TestContainer, unittest.TestCase):
         for include in cls.j['includes']:
             try:
                 with _open(include) as f:
-                    contents = f.read().decode('utf-8', 'replace')
+                    contents = f.read().decode('utf-8', 'strict')
                 data = json.loads(contents)
             except Exception as e:
-                yield cls._fail("Error while reading %r" % include, e)
+                yield cls._fail("strict while reading %r" % include, e)
                 continue
 
             # `include` is for output during tests only

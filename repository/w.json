@@ -35,6 +35,17 @@
 			]
 		},
 		{
+			"name": "Wanderlei Color Scheme",
+			"details": "https://github.com/JeremySaks/wanderlei-color-scheme",
+			"labels": ["color scheme"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
 			"name": "Warp-OS Color Scheme",
 			"details": "https://github.com/idleberg/WarpOS.tmTheme",
 			"labels": ["color scheme"],
@@ -46,8 +57,30 @@
 			]
 		},
 		{
+			"name": "WarpScript",
+			"details": "https://github.com/cityzendata/sublime-warpscript",
+			"labels": ["syntax", "highlight", "auto-complete", "snippets"],
+			"releases": [
+				{
+					"sublime_text": ">=3092",
+					"tags": true
+				}
+			]
+		},
+		{
 			"name": "Waxeye",
 			"details": "https://github.com/tijn/sublime-waxeye",
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
+			"name": "Weave",
+			"details": "https://github.com/mailtoharshit/Weave",
+			"labels": ["autocomplete", "snippets"],
 			"releases": [
 				{
 					"sublime_text": "*",
@@ -291,6 +324,29 @@
 			]
 		},
 		{
+			"name": "Wildlife Color Scheme",
+			"previous_names":["Wildlife"],
+			"details": "https://github.com/tushortz/wildlife",
+			"labels": ["color scheme","highlighting","linting"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
+			"name": "Wildlife gutter theme",
+			"details": "https://github.com/tushortz/Wildlife-gutter-theme",
+			"labels": ["linting"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
 			"name": "Winamp Skin Developer",
 			"details": "https://github.com/idleberg/Winamp-Skin-Dev-Sublime-Text",
 			"labels": ["auto-complete"],
@@ -314,8 +370,41 @@
 			"details": "https://github.com/SublimeText/WinMerge",
 			"releases": [
 				{
-					"sublime_text": "<3000",
+					"sublime_text": "*",
+					"platforms": ["windows"],
 					"branch": "master"
+				}
+			]
+		},
+		{
+			"name": "WinSCP",
+			"details": "https://github.com/thecotne/sublime-WinSCP",
+			"previous_names": ["sublime WinSCP"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
+			"name": "Wisedu TrunPage Snippets",
+			"details": "https://github.com/bywwcnll/wisedu",
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
+			"name": "Witcher Script Syntax",
+			"details": "https://github.com/flo5581/sublime-WitcherScript",
+			"labels": ["language syntax"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
 				}
 			]
 		},
@@ -332,6 +421,16 @@
 		{
 			"name": "Wok",
 			"details": "https://github.com/abbgrade/sublime-wok",
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
+				}
+			]
+		},
+		{
+			"name": "WolframAlpha Lookup",
+			"details": "https://github.com/PapaCharlie/WolframAlphaLookup/",
 			"releases": [
 				{
 					"sublime_text": "*",
@@ -380,11 +479,12 @@
 			]
 		},
 		{
-			"details": "https://github.com/titoBouzout/WordCount",
+			"name": "WordCompletion",
+			"details": "https://github.com/schmave/Sublime-Word-Completion",
 			"releases": [
 				{
 					"sublime_text": ">=3000",
-					"branch": "st3"
+					"tags": true
 				}
 			]
 		},
@@ -415,6 +515,17 @@
 				{
 					"sublime_text": "*",
 					"branch": "master"
+				}
+			]
+		},
+		{
+			"name": "WordPress Customizer",
+			"details": "https://github.com/ahmadawais/Sublime-WP-Customizer",
+			"labels": ["st3", "st2", "wordpress", "customizer", "wp customizer", "wordpress customizer", "wp customize", "wordpress customize", "developer", "codex", "search", "snippets"],
+			"releases": [
+				{
+					"sublime_text": "*",
+					"tags": true
 				}
 			]
 		},
@@ -528,6 +639,16 @@
 				{
 					"sublime_text": "*",
 					"branch": "master"
+				}
+			]
+		},
+		{
+			"name": "WRAMPAssemblyLanguage",
+			"details": "https://github.com/ZeddSerjeant/WrampAssemblyLanguange",
+			"releases": [
+				{
+					"sublime_text": ">=3092",
+					"tags": true
 				}
 			]
 		},
